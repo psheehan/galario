@@ -6,7 +6,11 @@ name: tests and docs
 # workflows running on Linux and MacOS have passwordless sudo rights:
 # https://stackoverflow.com/questions/57982945/how-to-apt-get-install-in-a-github-actions-workflow
 
-on: push
+on: 
+  push:
+    branches:
+      - "master"
+      - "unit-tests_workflow_updates"
 
 jobs:
   test:
@@ -18,7 +22,7 @@ jobs:
         shell: bash -l {0}
     strategy:
       matrix:
-        python-version: [ 3.6, 3.7, 3.8, 3.9 ]
+        python-version: [ 3.8, 3.9, '3.10', 3.11 ]
     env:
       OMP_NUM_THREADS: 2
     steps:
@@ -45,12 +49,9 @@ jobs:
       - name: Build and install galario, build docs
         run: |
           conda activate test
-          conda install astropy cython nomkl numpy pytest scipy sphinx
+          conda install astropy cython nomkl numpy pytest scipy sphinx scikit-build-core
           pip install coverage codecov pytest-cov
-          mkdir build && cd build
-          cmake -DCMAKE_INSTALL_PREFIX=/tmp -DCMAKE_PREFIX_PATH=${CONDA_PREFIX} ..
-          make
-          make install
+          pip install .
       - name: Run unit tests
         run: python/py.test.sh -sv --cov=./ python/test_galario.py
         working-directory: build
