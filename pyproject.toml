@@ -1,2 +1,19 @@
 [build-system]
-requires = ["setuptools","wheel","Cython", "numpy","pytest"]
+requires = [
+    "scikit-build-core",
+    "numpy",
+    "Cython",
+    "pytest",
+]
+build-backend="scikit_build_core.build"
+
+[project]
+name = "galario"
+version = "1.2.2"
+authors = [
+    { name="Marco Tazzari", email="psheehan@nrao.edu" },
+]
+description = "Gpu Accelerated Library for Analysing Radio Interferometer Observations"
+
+[tool.scikit-build]
+cmake.args = ['-DGALARIO_CHECK_CUDA=0']
