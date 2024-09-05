@@ -99,12 +99,12 @@ else()
   message(STATUS "Skipping the ${PROJECT_NAME} python wrapper")
 endif()
 
-find_package(Sphinx)
-if(SPHINX_FOUND)
-  add_subdirectory(docs)
-else()
-  message(STATUS "Cannot build the documentation without sphinx")
-endif()
+#find_package(Sphinx)
+#if(SPHINX_FOUND)
+#  add_subdirectory(docs)
+#else()
+#  message(STATUS "Cannot build the documentation without sphinx")
+#endif()
 
 ###
 # uninstall target
