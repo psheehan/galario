@@ -14,6 +14,7 @@ authors = [
     { name="Marco Tazzari", email="psheehan@nrao.edu" },
 ]
 description = "Gpu Accelerated Library for Analysing Radio Interferometer Observations"
+readme = "README.md"
 
 [tool.scikit-build]
 cmake.args = ['-DGALARIO_CHECK_CUDA=0']
