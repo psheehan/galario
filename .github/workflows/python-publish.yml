@@ -14,7 +14,6 @@ on:
   push:
     branches:
       - "master"
-      - "add_deploy_workflow"
 
 permissions:
   contents: read
@@ -76,31 +75,17 @@ jobs:
         name: dist-sdist
         path: dist/*.tar.gz
 
-  upload_pypi:
-    needs: [build_sdist]
-    runs-on: ubuntu-latest
-    if: github.event_name == 'release' && github.event.action == 'published'
-    steps:
-      - uses: actions/download-artifact@v4
-        with:
-          name: dist
-          path: dist
-    #- name: Publish package
-    #  uses: pypa/gh-action-pypi-publish@27b31702a0e7fc50959f5ad993c78deac1bdfc29
-    #  with:
-    #    user: __token__
-    #    password: ${{ secrets.PYPI_API_TOKEN }}
-
-  publish-to-testpypi:
-    name: Publish Python 🐍 distribution 📦 to TestPyPI
+  publish-to-pypi:
+    name: Publish Python 🐍 distribution 📦 to PyPI
     needs:
     #- build_wheels
     - build_sdist
     runs-on: ubuntu-latest
+    if: github.event_name == 'release' && github.event.action == 'published'
 
     environment:
-      name: testpypi
-      url: https://test.pypi.org/p/galario
+      name: pypi
+      url: https://pypi.org/p/galario
 
     permissions:
       id-token: write  # IMPORTANT: mandatory for trusted publishing
@@ -112,10 +97,5 @@ jobs:
         path: dist
         pattern: dist-*
         merge-multiple: true
-    - name: check downloaded files
-      run: |
-        ls dist/
-    - name: Publish distribution 📦 to TestPyPI
+    - name: Publish distribution 📦 to PyPI
       uses: pypa/gh-action-pypi-publish@release/v1
-      with:
-        repository-url: https://test.pypi.org/legacy/
